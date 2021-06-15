@@ -1,14 +1,16 @@
+using ipo.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using NLog;
+using System.IO;
+using ipo.Filters;
+using Contracts.Repository;
+using Repository;
+using ipo.Service;
 
 namespace ipo
 {
@@ -16,6 +18,7 @@ namespace ipo
     {
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config")); 
             Configuration = configuration;
         }
 
@@ -26,6 +29,13 @@ namespace ipo
         {
 
             services.AddControllers();
+            services.ConfigureDatabase(Configuration);
+            services.ConfigureLogger();
+            services.AddScoped<LoggerFilter>();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped<IipoRepository, IPORepository>();
+            services.AddScoped<IIpoService, IpoService>();
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,6 +45,8 @@ namespace ipo
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.ConfigureGlobalExceptionMiddleware();
 
             app.UseRouting();
 
