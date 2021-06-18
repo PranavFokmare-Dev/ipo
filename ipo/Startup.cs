@@ -37,7 +37,7 @@ namespace ipo
             services.AddScoped<IIpoService, IpoService>();
             services.AddAutoMapper(typeof(Startup));
         }
-
+        //MASTER COMMIT
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
