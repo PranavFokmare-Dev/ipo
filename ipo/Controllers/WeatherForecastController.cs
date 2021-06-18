@@ -16,7 +16,7 @@ namespace ipo.Controllers
         private readonly LoggerManager _logger;
         private static readonly string[] Summaries = new[]
         {
-            "Freeze", "Brace", "Chill", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorch"
+            "Freeze", "Brace", "Chill", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
 
